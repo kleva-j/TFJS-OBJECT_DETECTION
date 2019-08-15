@@ -1,0 +1,54 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/TFJS-OBJECT_DETECTION
+    docker:
+      # specify the version you desire here
+      # see https://hub.docker.com/r/circleci/node/tags/
+      - image: circleci/node:8.12.0-browsers
+      #- image: selenium/standalone-chrome:3.1.0
+      #- image: circleci/python:3.4-browsers
+      #- image: mysql:5.7
+    environment:
+      CHROME_BIN: "/usr/bin/google-chrome"
+      #name: Starting Xvfb (for Browser Tests)
+      #command: Xvfb :99 -screen 0 1280x1024x24
+      #background: true        
+    steps:
+      - checkout
+      - restore_cache:
+          #key: TFJS-OBJECT_DETECTION-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+      - run: npm install
+
+      - save_cache:
+          #key: TFJS-OBJECT_DETECTION-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - "node_modules"
+          key: v1-dependencies-{{ checksum "package.json" }}
+      #- run: xvfb-run -a npm run test:prod  #virtual screen run
+      - run: npm run test:prod-headless
+      # - run: npm run build
+      
+      - store_artifacts:
+          path: /code/test-results
+          destination: prefix
+
+      - store_test_results:
+          path: test-results
+
+    # The deploy job
+    deploy:
+      working_directory: ~/TFJS-OBJECT_DETECTION
+      docker:
+        - image: circleci/node:8.12.0-browsers
+
+    workflows:
+    version: 2
+    # The build and deploy workflow
+    build_and_deploy:
+      jobs:
+        - build
+        - deploy
