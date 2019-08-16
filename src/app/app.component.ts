@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
       requestAnimationFrame(() => {
         this.detectFrame(video, model);
       });
-    });
+    }).catch(() => this.loading = 'There was an error loading the webcam video feed, please try reloading the page to fix this.');
   }
 
   // tslint:disable-next-line: max-line-length
@@ -64,23 +64,18 @@ export class AppComponent implements OnInit {
     ctx.textBaseline = 'top';
     ctx.drawImage(this.video, 0, 0, this.width, this.height);
 
-    predictions.forEach((prediction: { bbox: [number, number, number, number]; class: string; }) => {
-      // Draw the bounding box.
+    predictions.forEach((prediction: { bbox: [number, number, number, number]; class: string; score: number; }) => {
       const [ x, y, width, height ] = prediction.bbox;
       ctx.strokeStyle = '#00FFFF';
       ctx.lineWidth = 2;
       ctx.strokeRect(x, y, width, height);
-      // Draw the label background.
       ctx.fillStyle = '#00FFFF';
       const textWidth = ctx.measureText(prediction.class).width;
       const textHeight = parseInt(font, 10);
-      ctx.fillRect(x, y, textWidth + 4, textHeight + 4);
-    });
-
-    predictions.forEach((prediction: { bbox: [number, number]; class: string; }) => {
-      const [ x, y] = prediction.bbox;
+      ctx.fillRect(x, y, textWidth + 39, textHeight + 8);
       ctx.fillStyle = '#000000';
-      ctx.fillText(prediction.class, x, y);
+      const score: any = prediction.score.toFixed(2);
+      ctx.fillText(`${prediction.class} ${score * 100}%`, x, y);
     });
   }
 }
