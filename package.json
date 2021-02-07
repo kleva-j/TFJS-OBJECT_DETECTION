@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "~7.2.16",
     "@angular/router": "~7.2.16",
     "@tensorflow-models/coco-ssd": "^2.2.1",
-    "@tensorflow/tfjs": "^2.8.2",    
+    "@tensorflow/tfjs": "^2.8.3",    
     "core-js": "^2.6.12",
     "ng-bullet": "^1.0.3",
     "rxjs": "~6.6.3",
