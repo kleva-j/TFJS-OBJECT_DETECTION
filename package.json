@@ -23,11 +23,11 @@
     "@angular/router": "~7.2.16",
     "@tensorflow-models/coco-ssd": "^2.2.1",
     "@tensorflow/tfjs": "^2.8.2",    
-    "core-js": "^2.6.11",
+    "core-js": "^2.6.12",
     "ng-bullet": "^1.0.3",
     "rxjs": "~6.6.3",
     "tslib": "^1.14.1",
-    "zone.js": "~0.11.2"
+    "zone.js": "~0.11.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.13.0",
